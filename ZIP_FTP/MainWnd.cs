@@ -14,9 +14,9 @@ using ZIP_FTP.Logic;
 
 namespace ZIP_FTP
 {
-  public partial class Form1 : Form
+  public partial class MainWnd : Form
   {
-    public Form1()
+    public MainWnd()
     {
       InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace ZIP_FTP
 
     private void LoadSites()
     {
-      lb_Sites.Items.AddRange(SitesLogic.GetSitesAsListBoxObjectCollection(lb_Sites));
+      lb_Sites.Items.AddRange(SitesLogic.GetSites(lb_Sites));
     }
 
     #region TEST METHODS
@@ -54,6 +54,28 @@ namespace ZIP_FTP
       ZipFile.CreateFromDirectory(dirToZip, zipName, compression, includeRoot);
     }
 
+
+    #endregion
+
+    #region EVENTS
+
+    private void lb_Sites_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      lb_SitePublishDir.Items.Clear();
+
+      try
+      {
+        lb_SitePublishDir.Items.AddRange(SitesLogic.GetSitePublishDirectoryContent(lb_SitePublishDir, (string)lb_Sites.SelectedItem));
+      }
+      catch (FileNotFoundException exception)
+      {
+        MessageBox.Show(exception.Message);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show(exception.Message);
+      }
+    }
 
     #endregion
   }
