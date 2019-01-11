@@ -63,6 +63,8 @@ namespace ZIP_FTP
     {
       lb_SitePublishDir.Items.Clear();
 
+      lbl_SiteDirectory.Text = (string)lb_Sites.SelectedItem;
+
       try
       {
         lb_SitePublishDir.Items.AddRange(SitesLogic.GetSitePublishDirectoryContent(lb_SitePublishDir, (string)lb_Sites.SelectedItem));

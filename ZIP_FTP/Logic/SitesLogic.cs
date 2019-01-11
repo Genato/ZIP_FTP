@@ -45,8 +45,10 @@ namespace ZIP_FTP.Logic
         throw new Exception("Publish directory does not exist !!");
       }
 
-      string[] publishNames = GetLastPartFromPath(sitePublishDirectory);
-      ListBox.ObjectCollection sitesAsObjectCollection = new ListBox.ObjectCollection(lb_SitePublishDir, publishNames);
+      string[] publishDirectoriesNames = GetLastPartFromPath(sitePublishDirectory);
+      string[] publishDirectoriesLastWriten = GetSitesDirectoryLastModifiedTime(sitePublishDirectory);
+      string[] concatenatedPublishNamesAndLastModified = ConcatPublishNamesAndLastMo0dified(publishDirectoriesNames, publishDirectoriesLastWriten);
+      ListBox.ObjectCollection sitesAsObjectCollection = new ListBox.ObjectCollection(lb_SitePublishDir, concatenatedPublishNamesAndLastModified);
 
       return new ListBox.ObjectCollection(lb_SitePublishDir);
     }
@@ -66,6 +68,30 @@ namespace ZIP_FTP.Logic
       }
 
       return lastPartOfPaths;
+    }
+
+    private static string[] GetSitesDirectoryLastModifiedTime(string[] directoriePaths)
+    {
+      string[] directoriesLastWritenTime = new string[directoriePaths.Length];
+
+      for (int i = 0; i < directoriePaths.Length; i++)
+      {
+        directoriesLastWritenTime[i] = Directory.GetLastWriteTime(directoriePaths[i]).ToString();
+      }
+
+      return directoriesLastWritenTime;
+    }
+
+    private static string[] ConcatPublishNamesAndLastMo0dified(string[] directoriesName, string[] directoriesLastModified)
+    {
+      string[] newStringArray = new string[directoriesName.Length];
+
+      for (int i = 0; i < directoriesName.Length; i++)
+      {
+        newStringArray[i] = directoriesName[i] + " - " + directoriesLastModified[i];
+      }
+
+      return newStringArray;
     }
   }
 }
