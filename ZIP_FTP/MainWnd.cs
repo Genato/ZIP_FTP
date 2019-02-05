@@ -23,9 +23,14 @@ namespace ZIP_FTP
       LoadSites();
     }
 
+    private string SiteName { get; set; }
+    private string SelectedPublish { get; set; }
+
     private void LoadSites()
     {
-      lb_Sites.Items.AddRange(SitesLogic.GetSites(lb_Sites));
+      lw_Sites.Items.AddRange(SitesLogic.GetSites(lw_Sites));
+      lw_Sites.View = View.Details;
+      lw_Sites.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
 
     #region TEST METHODS
@@ -63,11 +68,12 @@ namespace ZIP_FTP
     {
       lb_SitePublishDir.Items.Clear();
 
-      lbl_SiteDirectory.Text = (string)lb_Sites.SelectedItem;
+      lbl_SiteDirectory.Text += (string)lb_Sites.SelectedItem;
+      SiteName = (string)lb_Sites.SelectedItem;
 
       try
       {
-        lb_SitePublishDir.Items.AddRange(SitesLogic.GetSitePublishDirectoryContent(lb_SitePublishDir, (string)lb_Sites.SelectedItem));
+        lb_SitePublishDir.Items.Add(SitesLogic.GetSitePublishDirectoryContent(lb_SitePublishDir, SiteName));
       }
       catch (FileNotFoundException exception)
       {
@@ -79,6 +85,17 @@ namespace ZIP_FTP
       }
     }
 
+    private void lb_SitePublishDir_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      SelectedPublish = (string)lb_SitePublishDir.SelectedItem;
+    }
+
+    private void btn_ZipFtp_Click(object sender, EventArgs e)
+    {
+
+    }
+
     #endregion
+
   }
 }

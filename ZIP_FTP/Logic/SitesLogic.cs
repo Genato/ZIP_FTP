@@ -1,26 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListView;
 
 namespace ZIP_FTP.Logic
 {
   public class SitesLogic
   {
     public static string SitesRootDirectory { get { return @"W:\Razvoj\WEM\EasyEditCms\Sites\"; } }
-    public static string SitesPublishDirectory { get { return @"\Publish"; } }
+    public static string SitesPublishDirectory { get { return @"\Publish\"; } }
 
-    public static ListBox.ObjectCollection GetSites(ListBox lb_Sites)
+    public static ListViewItem[] GetSites(ListView lw_Sites)
     {
       string[] sitesFullPath = Directory.GetDirectories(SitesLogic.SitesRootDirectory);
       string[] sitesNames = GetLastPartFromPath(sitesFullPath);
 
-      ListBox.ObjectCollection sitesAsObjectCollection = new ListBox.ObjectCollection(lb_Sites, sitesNames);
+      ListViewItem[] listViewItems = new ListViewItem[sitesFullPath.Length];
 
-      return sitesAsObjectCollection;
+      for (int i = 0; i < sitesNames.Length; i++)
+      {
+        ListViewItem listViewItem = new ListViewItem(sitesNames[i]);
+        //lw_Sites.Items.Add(listViewItem);
+        listViewItems[i] = listViewItem;
+        listViewItems[i].BackColor = Color.Bisque;
+      }
+
+
+
+      //ListViewItemCollection sitesListView = new ListViewItemCollection(lw_Sites);
+
+      //foreach (var item in sitesNames)
+      //{
+      //  sitesListView.Add(item);
+      //}
+
+      return listViewItems;
     }
 
     public static ListBox.ObjectCollection GetSitePublishDirectoryContent(ListBox lb_SitePublishDir, string siteName)
@@ -50,7 +69,7 @@ namespace ZIP_FTP.Logic
       string[] concatenatedPublishNamesAndLastModified = ConcatPublishNamesAndLastMo0dified(publishDirectoriesNames, publishDirectoriesLastWriten);
       ListBox.ObjectCollection sitesAsObjectCollection = new ListBox.ObjectCollection(lb_SitePublishDir, concatenatedPublishNamesAndLastModified);
 
-      return new ListBox.ObjectCollection(lb_SitePublishDir);
+      return sitesAsObjectCollection;
     }
 
     /// <summary>
