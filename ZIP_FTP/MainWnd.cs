@@ -146,7 +146,34 @@ namespace ZIP_FTP
 
     private void tb_searchSites_TextChanged(object sender, EventArgs e)
     {
+      string siteName = (sender as TextBox).Text;
 
+      if (siteName.Length < 4)
+      {
+        return;
+      }
+
+      ListViewItem[] listViewItems = new ListViewItem[0];
+
+      for (int i = 0, j = 0; i < lw_Sites.Items.Count; i++)
+      {
+        if (lw_Sites.Items[i].Text.ToLower().Contains(siteName))
+        {
+          Array.Resize<ListViewItem>(ref listViewItems, listViewItems.Count() + 1);
+
+          ListViewItem _listViewItem = new ListViewItem(lw_Sites.Items[i].Text);
+          _listViewItem.SubItems.Add(lw_Sites.Items[i].SubItems[1].Text);
+
+          listViewItems[j] = _listViewItem;
+          listViewItems[j].BackColor = Color.Bisque;
+
+          ++j;
+        }
+      }
+
+      lw_Sites.Items.Clear();
+      lw_Sites.Items.AddRange(listViewItems);
+      CustomizeListView(lw_Sites);
     }
 
     private void btn_ZipFtp_Click(object sender, EventArgs e)
