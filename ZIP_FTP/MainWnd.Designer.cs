@@ -217,8 +217,8 @@
       this.lw_Sites.Size = new System.Drawing.Size(386, 252);
       this.lw_Sites.TabIndex = 7;
       this.lw_Sites.UseCompatibleStateImageBehavior = false;
-      this.lw_Sites.SelectedIndexChanged += new System.EventHandler(this.lw_Sites_SelectedIndexChanged);
       this.lw_Sites.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
+      this.lw_Sites.SelectedIndexChanged += new System.EventHandler(this.lw_Sites_SelectedIndexChanged);
       // 
       // sitesName
       // 
@@ -226,7 +226,7 @@
       // 
       // lastModified
       // 
-      this.lastModified.Text = "Last modified";
+      this.lastModified.Text = "Last modified (Publish directory content)";
       // 
       // lbl_SelectedPublish
       // 
