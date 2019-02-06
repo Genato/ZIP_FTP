@@ -23,14 +23,19 @@ namespace ZIP_FTP
       LoadSites();
     }
 
-    private string SiteName { get; set; }
-    private string SelectedPublish { get; set; }
+    private static string SiteName { get; set; }
+    private static string SelectedPublish { get; set; }
 
     private void LoadSites()
     {
       lw_Sites.Items.AddRange(SitesLogic.GetSites(lw_Sites));
-      lw_Sites.View = View.Details;
-      lw_Sites.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+      CustomizeListView(lw_Sites);
+    }
+
+    private void CustomizeListView(ListView listView)
+    {
+      listView.View = View.Details;
+      listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
     }
 
     #region TEST METHODS
@@ -64,16 +69,22 @@ namespace ZIP_FTP
 
     #region EVENTS
 
-    private void lb_Sites_SelectedIndexChanged(object sender, EventArgs e)
+    private void lw_Sites_SelectedIndexChanged(object sender, EventArgs e)
     {
-      lb_SitePublishDir.Items.Clear();
+      if (lw_Sites.SelectedItems.Count <= 0)
+      {
+        return;
+      }
 
-      lbl_SiteDirectory.Text += (string)lb_Sites.SelectedItem;
-      SiteName = (string)lb_Sites.SelectedItem;
+      lw_SitePublishDir.Items.Clear();
+      CustomizeListView(lw_SitePublishDir);
+
+      lbl_SiteDirectory.Text += (string)lw_Sites.SelectedItems[0].Text;
+      SiteName = (string)lw_Sites.SelectedItems[0].Text;
 
       try
       {
-        lb_SitePublishDir.Items.Add(SitesLogic.GetSitePublishDirectoryContent(lb_SitePublishDir, SiteName));
+        lw_SitePublishDir.Items.AddRange(SitesLogic.GetSitePublishDirectoryContent(SiteName));
       }
       catch (FileNotFoundException exception)
       {
@@ -85,9 +96,26 @@ namespace ZIP_FTP
       }
     }
 
-    private void lb_SitePublishDir_SelectedIndexChanged(object sender, EventArgs e)
+    private void lw_SitePublishDir_SelectedIndexChanged(object sender, EventArgs e)
     {
-      SelectedPublish = (string)lb_SitePublishDir.SelectedItem;
+      if (lw_SitePublishDir.SelectedItems.Count <= 0)
+      {
+        return;
+      }
+
+      SelectedPublish = (string)lw_SitePublishDir.SelectedItems[0].Text;
+      tb_selectedPublishItemFullPath.Text += SitesLogic.SitesRootDirectory + SiteName + SitesLogic.SitesPublishDirectory + SelectedPublish;
+    }
+
+    private void btn_refresh_Click(object sender, EventArgs e)
+    {
+      lw_Sites.Items.Clear();
+      LoadSites();
+    }
+
+    private void tb_searchSites_TextChanged(object sender, EventArgs e)
+    {
+
     }
 
     private void btn_ZipFtp_Click(object sender, EventArgs e)

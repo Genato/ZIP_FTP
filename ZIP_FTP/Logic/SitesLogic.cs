@@ -19,30 +19,23 @@ namespace ZIP_FTP.Logic
     {
       string[] sitesFullPath = Directory.GetDirectories(SitesLogic.SitesRootDirectory);
       string[] sitesNames = GetLastPartFromPath(sitesFullPath);
+      string[] sitesLastModified = GetSitesDirectoryLastModifiedTime(sitesFullPath);
 
       ListViewItem[] listViewItems = new ListViewItem[sitesFullPath.Length];
 
       for (int i = 0; i < sitesNames.Length; i++)
       {
-        ListViewItem listViewItem = new ListViewItem(sitesNames[i]);
-        //lw_Sites.Items.Add(listViewItem);
-        listViewItems[i] = listViewItem;
+        ListViewItem _listViewItem = new ListViewItem(sitesNames[i]);
+        _listViewItem.SubItems.Add(sitesLastModified[i]);
+
+        listViewItems[i] = _listViewItem;
         listViewItems[i].BackColor = Color.Bisque;
       }
-
-
-
-      //ListViewItemCollection sitesListView = new ListViewItemCollection(lw_Sites);
-
-      //foreach (var item in sitesNames)
-      //{
-      //  sitesListView.Add(item);
-      //}
 
       return listViewItems;
     }
 
-    public static ListBox.ObjectCollection GetSitePublishDirectoryContent(ListBox lb_SitePublishDir, string siteName)
+    public static ListViewItem[] GetSitePublishDirectoryContent(string siteName)
     {
       string[] sitePublishDirectory;
 
@@ -66,10 +59,21 @@ namespace ZIP_FTP.Logic
 
       string[] publishDirectoriesNames = GetLastPartFromPath(sitePublishDirectory);
       string[] publishDirectoriesLastWriten = GetSitesDirectoryLastModifiedTime(sitePublishDirectory);
-      string[] concatenatedPublishNamesAndLastModified = ConcatPublishNamesAndLastMo0dified(publishDirectoriesNames, publishDirectoriesLastWriten);
-      ListBox.ObjectCollection sitesAsObjectCollection = new ListBox.ObjectCollection(lb_SitePublishDir, concatenatedPublishNamesAndLastModified);
+      //string[] concatenatedPublishNamesAndLastModified = ConcatPublishNamesAndLastMo0dified(publishDirectoriesNames, publishDirectoriesLastWriten);
 
-      return sitesAsObjectCollection;
+      ListViewItem[] listViewItems = new ListViewItem[publishDirectoriesNames.Length];
+
+      for (int i = 0; i < publishDirectoriesNames.Length; i++)
+      {
+        ListViewItem _listViewItem = new ListViewItem(publishDirectoriesNames[i]);
+        _listViewItem.SubItems.Add(publishDirectoriesLastWriten[i]);
+
+        listViewItems[i] = _listViewItem;
+        listViewItems[i].BackColor = Color.Bisque;
+      }
+
+
+      return listViewItems;
     }
 
     /// <summary>
