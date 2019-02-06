@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compresion\Compression.cs" />
+    <Compile Include="Logic\ListViewItemComparer.cs" />
     <Compile Include="MainWnd.cs">
       <SubType>Form</SubType>
     </Compile>

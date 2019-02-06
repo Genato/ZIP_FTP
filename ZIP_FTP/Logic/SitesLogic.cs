@@ -15,18 +15,26 @@ namespace ZIP_FTP.Logic
     public static string SitesRootDirectory { get { return @"W:\Razvoj\WEM\EasyEditCms\Sites\"; } }
     public static string SitesPublishDirectory { get { return @"\Publish\"; } }
 
-    public static ListViewItem[] GetSites(ListView lw_Sites)
+    public static ListViewItem[] GetSites(ListView lw_Sites, string sortBy)
     {
-      string[] sitesFullPath = Directory.GetDirectories(SitesLogic.SitesRootDirectory);
-      string[] sitesNames = GetLastPartFromPath(sitesFullPath);
-      string[] sitesLastModified = GetSitesDirectoryLastModifiedTime(sitesFullPath);
+      string[] sitesFull_Path = Directory.GetDirectories(SitesLogic.SitesRootDirectory);
+      string[] sitesNames = GetLastPartFromPath(sitesFull_Path);
+      string[] sitespublishDirLastModifiedPath = new string[sitesFull_Path.Length];
+      string[] sitespublishDirLastModified = new string[sitesFull_Path.Length];
 
-      ListViewItem[] listViewItems = new ListViewItem[sitesFullPath.Length];
+      for (int i = 0; i < sitesFull_Path.Length; i++)
+      {
+        sitespublishDirLastModifiedPath[i] = sitesFull_Path[i] + SitesPublishDirectory + sortBy;
+      }
+
+      sitespublishDirLastModified = GetSitesDirectoryLastModifiedTime(sitespublishDirLastModifiedPath);
+
+      ListViewItem[] listViewItems = new ListViewItem[sitesFull_Path.Length];
 
       for (int i = 0; i < sitesNames.Length; i++)
       {
         ListViewItem _listViewItem = new ListViewItem(sitesNames[i]);
-        _listViewItem.SubItems.Add(sitesLastModified[i]);
+        _listViewItem.SubItems.Add(sitespublishDirLastModified[i]);
 
         listViewItems[i] = _listViewItem;
         listViewItems[i].BackColor = Color.Bisque;
@@ -35,6 +43,11 @@ namespace ZIP_FTP.Logic
       return listViewItems;
     }
 
+    /// <summary>
+    /// Method return content of publish dirtectory for given site.
+    /// </summary>
+    /// <param name="siteName"></param>
+    /// <returns></returns>
     public static ListViewItem[] GetSitePublishDirectoryContent(string siteName)
     {
       string[] sitePublishDirectory;
@@ -59,7 +72,6 @@ namespace ZIP_FTP.Logic
 
       string[] publishDirectoriesNames = GetLastPartFromPath(sitePublishDirectory);
       string[] publishDirectoriesLastWriten = GetSitesDirectoryLastModifiedTime(sitePublishDirectory);
-      //string[] concatenatedPublishNamesAndLastModified = ConcatPublishNamesAndLastMo0dified(publishDirectoriesNames, publishDirectoriesLastWriten);
 
       ListViewItem[] listViewItems = new ListViewItem[publishDirectoriesNames.Length];
 
@@ -93,7 +105,7 @@ namespace ZIP_FTP.Logic
       return lastPartOfPaths;
     }
 
-    private static string[] GetSitesDirectoryLastModifiedTime(string[] directoriePaths)
+    public static string[] GetSitesDirectoryLastModifiedTime(string[] directoriePaths)
     {
       string[] directoriesLastWritenTime = new string[directoriePaths.Length];
 
@@ -103,18 +115,6 @@ namespace ZIP_FTP.Logic
       }
 
       return directoriesLastWritenTime;
-    }
-
-    private static string[] ConcatPublishNamesAndLastMo0dified(string[] directoriesName, string[] directoriesLastModified)
-    {
-      string[] newStringArray = new string[directoriesName.Length];
-
-      for (int i = 0; i < directoriesName.Length; i++)
-      {
-        newStringArray[i] = directoriesName[i] + " - " + directoriesLastModified[i];
-      }
-
-      return newStringArray;
     }
   }
 }

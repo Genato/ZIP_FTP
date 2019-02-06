@@ -32,6 +32,13 @@
       this.lbl_Sites = new System.Windows.Forms.Label();
       this.lbl_SiteDirectory = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.rb_tester = new System.Windows.Forms.RadioButton();
+      this.rb_release = new System.Windows.Forms.RadioButton();
+      this.btn_sortSites = new System.Windows.Forms.Button();
+      this.lbl_SearchSites = new System.Windows.Forms.Label();
+      this.tb_searchSites = new System.Windows.Forms.TextBox();
+      this.tb_selectedPublishItemFullPath = new System.Windows.Forms.TextBox();
       this.btn_refresh = new System.Windows.Forms.Button();
       this.lw_SitePublishDir = new System.Windows.Forms.ListView();
       this.publishDirectoryContent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,11 +48,8 @@
       this.lastModified = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.lbl_SelectedPublish = new System.Windows.Forms.Label();
       this.btn_ZipFtp = new System.Windows.Forms.Button();
-      this.tb_selectedPublishItemFullPath = new System.Windows.Forms.TextBox();
-      this.tb_searchSites = new System.Windows.Forms.TextBox();
-      this.lbl_SearchSites = new System.Windows.Forms.Label();
-      this.btn_sortSites = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
+      this.groupBox2.SuspendLayout();
       this.SuspendLayout();
       // 
       // openFileDialog1
@@ -74,6 +78,7 @@
       // 
       // groupBox1
       // 
+      this.groupBox1.Controls.Add(this.groupBox2);
       this.groupBox1.Controls.Add(this.btn_sortSites);
       this.groupBox1.Controls.Add(this.lbl_SearchSites);
       this.groupBox1.Controls.Add(this.tb_searchSites);
@@ -92,9 +97,81 @@
       this.groupBox1.TabIndex = 5;
       this.groupBox1.TabStop = false;
       // 
+      // groupBox2
+      // 
+      this.groupBox2.Controls.Add(this.rb_tester);
+      this.groupBox2.Controls.Add(this.rb_release);
+      this.groupBox2.Location = new System.Drawing.Point(6, 302);
+      this.groupBox2.Name = "groupBox2";
+      this.groupBox2.Size = new System.Drawing.Size(386, 48);
+      this.groupBox2.TabIndex = 16;
+      this.groupBox2.TabStop = false;
+      this.groupBox2.Text = "Sort by (Publish directory content)";
+      // 
+      // rb_tester
+      // 
+      this.rb_tester.AutoSize = true;
+      this.rb_tester.Location = new System.Drawing.Point(195, 19);
+      this.rb_tester.Name = "rb_tester";
+      this.rb_tester.Size = new System.Drawing.Size(55, 17);
+      this.rb_tester.TabIndex = 15;
+      this.rb_tester.TabStop = true;
+      this.rb_tester.Text = "Tester";
+      this.rb_tester.UseVisualStyleBackColor = true;
+      this.rb_tester.CheckedChanged += new System.EventHandler(this.rb_tester_CheckedChanged);
+      // 
+      // rb_release
+      // 
+      this.rb_release.AutoSize = true;
+      this.rb_release.Location = new System.Drawing.Point(6, 19);
+      this.rb_release.Name = "rb_release";
+      this.rb_release.Size = new System.Drawing.Size(64, 17);
+      this.rb_release.TabIndex = 14;
+      this.rb_release.TabStop = true;
+      this.rb_release.Text = "Release";
+      this.rb_release.UseVisualStyleBackColor = true;
+      this.rb_release.CheckedChanged += new System.EventHandler(this.rb_release_CheckedChanged);
+      // 
+      // btn_sortSites
+      // 
+      this.btn_sortSites.Location = new System.Drawing.Point(201, 356);
+      this.btn_sortSites.Name = "btn_sortSites";
+      this.btn_sortSites.Size = new System.Drawing.Size(191, 23);
+      this.btn_sortSites.TabIndex = 13;
+      this.btn_sortSites.Text = "Sort sites (by publish time)";
+      this.btn_sortSites.UseVisualStyleBackColor = true;
+      this.btn_sortSites.Click += new System.EventHandler(this.btn_sortSites_Click);
+      // 
+      // lbl_SearchSites
+      // 
+      this.lbl_SearchSites.AutoSize = true;
+      this.lbl_SearchSites.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lbl_SearchSites.Location = new System.Drawing.Point(3, 398);
+      this.lbl_SearchSites.Name = "lbl_SearchSites";
+      this.lbl_SearchSites.Size = new System.Drawing.Size(79, 13);
+      this.lbl_SearchSites.TabIndex = 12;
+      this.lbl_SearchSites.Text = "Search site: ";
+      // 
+      // tb_searchSites
+      // 
+      this.tb_searchSites.Location = new System.Drawing.Point(93, 395);
+      this.tb_searchSites.Name = "tb_searchSites";
+      this.tb_searchSites.Size = new System.Drawing.Size(299, 20);
+      this.tb_searchSites.TabIndex = 11;
+      this.tb_searchSites.TextChanged += new System.EventHandler(this.tb_searchSites_TextChanged);
+      // 
+      // tb_selectedPublishItemFullPath
+      // 
+      this.tb_selectedPublishItemFullPath.Location = new System.Drawing.Point(3, 511);
+      this.tb_selectedPublishItemFullPath.Multiline = true;
+      this.tb_selectedPublishItemFullPath.Name = "tb_selectedPublishItemFullPath";
+      this.tb_selectedPublishItemFullPath.ReadOnly = true;
+      this.tb_selectedPublishItemFullPath.Size = new System.Drawing.Size(714, 20);
+      this.tb_selectedPublishItemFullPath.TabIndex = 10;
+      // 
       // btn_refresh
       // 
-      this.btn_refresh.Location = new System.Drawing.Point(6, 302);
+      this.btn_refresh.Location = new System.Drawing.Point(6, 356);
       this.btn_refresh.Name = "btn_refresh";
       this.btn_refresh.Size = new System.Drawing.Size(189, 23);
       this.btn_refresh.TabIndex = 9;
@@ -141,6 +218,7 @@
       this.lw_Sites.TabIndex = 7;
       this.lw_Sites.UseCompatibleStateImageBehavior = false;
       this.lw_Sites.SelectedIndexChanged += new System.EventHandler(this.lw_Sites_SelectedIndexChanged);
+      this.lw_Sites.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
       // 
       // sitesName
       // 
@@ -170,42 +248,6 @@
       this.btn_ZipFtp.UseVisualStyleBackColor = true;
       this.btn_ZipFtp.Click += new System.EventHandler(this.btn_ZipFtp_Click);
       // 
-      // tb_selectedPublishItemFullPath
-      // 
-      this.tb_selectedPublishItemFullPath.Location = new System.Drawing.Point(3, 511);
-      this.tb_selectedPublishItemFullPath.Multiline = true;
-      this.tb_selectedPublishItemFullPath.Name = "tb_selectedPublishItemFullPath";
-      this.tb_selectedPublishItemFullPath.ReadOnly = true;
-      this.tb_selectedPublishItemFullPath.Size = new System.Drawing.Size(714, 20);
-      this.tb_selectedPublishItemFullPath.TabIndex = 10;
-      // 
-      // tb_searchSites
-      // 
-      this.tb_searchSites.Location = new System.Drawing.Point(93, 336);
-      this.tb_searchSites.Name = "tb_searchSites";
-      this.tb_searchSites.Size = new System.Drawing.Size(299, 20);
-      this.tb_searchSites.TabIndex = 11;
-      this.tb_searchSites.TextChanged += new System.EventHandler(this.tb_searchSites_TextChanged);
-      // 
-      // lbl_SearchSites
-      // 
-      this.lbl_SearchSites.AutoSize = true;
-      this.lbl_SearchSites.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lbl_SearchSites.Location = new System.Drawing.Point(3, 339);
-      this.lbl_SearchSites.Name = "lbl_SearchSites";
-      this.lbl_SearchSites.Size = new System.Drawing.Size(85, 13);
-      this.lbl_SearchSites.TabIndex = 12;
-      this.lbl_SearchSites.Text = "Search sites: ";
-      // 
-      // btn_sortSites
-      // 
-      this.btn_sortSites.Location = new System.Drawing.Point(201, 302);
-      this.btn_sortSites.Name = "btn_sortSites";
-      this.btn_sortSites.Size = new System.Drawing.Size(191, 23);
-      this.btn_sortSites.TabIndex = 13;
-      this.btn_sortSites.Text = "Sort sites";
-      this.btn_sortSites.UseVisualStyleBackColor = true;
-      // 
       // MainWnd
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -216,6 +258,8 @@
       this.Text = "ZIP_FTP";
       this.groupBox1.ResumeLayout(false);
       this.groupBox1.PerformLayout();
+      this.groupBox2.ResumeLayout(false);
+      this.groupBox2.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -239,6 +283,9 @@
     private System.Windows.Forms.Label lbl_SearchSites;
     private System.Windows.Forms.TextBox tb_searchSites;
     private System.Windows.Forms.Button btn_sortSites;
+    private System.Windows.Forms.RadioButton rb_tester;
+    private System.Windows.Forms.RadioButton rb_release;
+    private System.Windows.Forms.GroupBox groupBox2;
   }
 }
 
