@@ -11,6 +11,8 @@ using System.IO;
 using System.IO.Compression;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ZIP_FTP.Logic;
+using System.Net;
+using ZIP_FTP.Extenders;
 
 namespace ZIP_FTP
 {
@@ -46,35 +48,6 @@ namespace ZIP_FTP
       radioButton.Checked = true;
       SortBy = rb_release.Text;
     }
-
-    #region TEST METHODS
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-      CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-      dialog.InitialDirectory = @"W:\Razvoj\WEM\EasyEditCms\Sites";
-      dialog.IsFolderPicker = true;
-
-      if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-      {
-        SimpleZip(dialog.FileName, dialog.FileName + "ZIP_TEST.zip", CompressionLevel.Optimal, true);
-      }
-    }
-
-    //Example 1
-    static void SimpleZip(string dirToZip, string zipName)
-    {
-      ZipFile.CreateFromDirectory(dirToZip, zipName);
-    }
-
-    //Example 2
-    static void SimpleZip(string dirToZip, string zipName, CompressionLevel compression, bool includeRoot)
-    {
-      ZipFile.CreateFromDirectory(dirToZip, zipName, compression, includeRoot);
-    }
-
-
-    #endregion
 
     #region EVENTS
 
@@ -113,7 +86,7 @@ namespace ZIP_FTP
       }
 
       SelectedPublish = (string)lw_SitePublishDir.SelectedItems[0].Text;
-      tb_selectedPublishItemFullPath.Text += SitesLogic.SitesRootDirectory + SiteName + SitesLogic.SitesPublishDirectory + SelectedPublish;
+      tb_selectedPublishItemFullPath.Text = SitesLogic.SitesRootDirectory + SiteName + SitesLogic.SitesPublishDirectory + SelectedPublish;
     }
 
     private void btn_refresh_Click(object sender, EventArgs e)
@@ -178,11 +151,38 @@ namespace ZIP_FTP
 
     private void btn_ZipFtp_Click(object sender, EventArgs e)
     {
-
+      Task zipFtp_Task = new Task(() => ZipFtp.ZipThenFtp(this, tb_selectedPublishItemFullPath, pb_ZIP, pb_FTP, SiteName));
+      zipFtp_Task.Start();
     }
-
 
     #endregion
 
+    #region Cross threaded methods
+
+    delegate void SetProgressBarDelegate(int value, CustomProgressBar pb);
+
+    /// <summary>
+    /// Method for setting up ProgressBar value (for cross threaded) 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="pb"></param>
+    public void SetProgressBarValue(int value, CustomProgressBar pb)
+    {
+      // InvokeRequired required compares the thread ID of the
+      // calling thread to the thread ID of the creating thread.
+      // If these threads are different, it returns true.
+      if (pb.InvokeRequired)
+      {
+        SetProgressBarDelegate del = new SetProgressBarDelegate(SetProgressBarValue);
+        this.Invoke(del, new object[] { value, pb });
+      }
+      else
+      {
+        pb.Value = value;
+        pb.CustomText = value.ToString() + "%";
+      }
+
+      #endregion
+    }
   }
 }

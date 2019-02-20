@@ -1,4 +1,7 @@
-﻿namespace ZIP_FTP
+﻿using System.Drawing;
+using ZIP_FTP.Extenders;
+
+namespace ZIP_FTP
 {
   partial class MainWnd
   {
@@ -28,10 +31,13 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWnd));
       this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
       this.lbl_Sites = new System.Windows.Forms.Label();
       this.lbl_SiteDirectory = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.pb_FTP = new CustomProgressBar();
+      this.pb_ZIP = new CustomProgressBar();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.rb_tester = new System.Windows.Forms.RadioButton();
       this.rb_release = new System.Windows.Forms.RadioButton();
@@ -78,6 +84,8 @@
       // 
       // groupBox1
       // 
+      this.groupBox1.Controls.Add(this.pb_FTP);
+      this.groupBox1.Controls.Add(this.pb_ZIP);
       this.groupBox1.Controls.Add(this.groupBox2);
       this.groupBox1.Controls.Add(this.btn_sortSites);
       this.groupBox1.Controls.Add(this.lbl_SearchSites);
@@ -93,9 +101,23 @@
       this.groupBox1.Location = new System.Drawing.Point(12, 12);
       this.groupBox1.Name = "groupBox1";
       this.groupBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-      this.groupBox1.Size = new System.Drawing.Size(724, 572);
+      this.groupBox1.Size = new System.Drawing.Size(724, 669);
       this.groupBox1.TabIndex = 5;
       this.groupBox1.TabStop = false;
+      // 
+      // pb_FTP
+      // 
+      this.pb_FTP.Location = new System.Drawing.Point(6, 527);
+      this.pb_FTP.Name = "pb_FTP";
+      this.pb_FTP.Size = new System.Drawing.Size(711, 33);
+      this.pb_FTP.TabIndex = 18;
+      // 
+      // pb_ZIP
+      // 
+      this.pb_ZIP.Location = new System.Drawing.Point(6, 465);
+      this.pb_ZIP.Name = "pb_ZIP";
+      this.pb_ZIP.Size = new System.Drawing.Size(711, 32);
+      this.pb_ZIP.TabIndex = 17;
       // 
       // groupBox2
       // 
@@ -162,7 +184,7 @@
       // 
       // tb_selectedPublishItemFullPath
       // 
-      this.tb_selectedPublishItemFullPath.Location = new System.Drawing.Point(3, 511);
+      this.tb_selectedPublishItemFullPath.Location = new System.Drawing.Point(3, 612);
       this.tb_selectedPublishItemFullPath.Multiline = true;
       this.tb_selectedPublishItemFullPath.Name = "tb_selectedPublishItemFullPath";
       this.tb_selectedPublishItemFullPath.ReadOnly = true;
@@ -232,7 +254,7 @@
       // 
       this.lbl_SelectedPublish.AutoSize = true;
       this.lbl_SelectedPublish.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lbl_SelectedPublish.Location = new System.Drawing.Point(3, 485);
+      this.lbl_SelectedPublish.Location = new System.Drawing.Point(3, 586);
       this.lbl_SelectedPublish.Name = "lbl_SelectedPublish";
       this.lbl_SelectedPublish.Size = new System.Drawing.Size(159, 13);
       this.lbl_SelectedPublish.TabIndex = 6;
@@ -240,7 +262,7 @@
       // 
       // btn_ZipFtp
       // 
-      this.btn_ZipFtp.Location = new System.Drawing.Point(3, 539);
+      this.btn_ZipFtp.Location = new System.Drawing.Point(3, 640);
       this.btn_ZipFtp.Name = "btn_ZipFtp";
       this.btn_ZipFtp.Size = new System.Drawing.Size(715, 23);
       this.btn_ZipFtp.TabIndex = 5;
@@ -252,8 +274,9 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(748, 596);
+      this.ClientSize = new System.Drawing.Size(748, 693);
       this.Controls.Add(this.groupBox1);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "MainWnd";
       this.Text = "ZIP_FTP";
       this.groupBox1.ResumeLayout(false);
@@ -286,6 +309,8 @@
     private System.Windows.Forms.RadioButton rb_tester;
     private System.Windows.Forms.RadioButton rb_release;
     private System.Windows.Forms.GroupBox groupBox2;
+    private CustomProgressBar pb_FTP;
+    private CustomProgressBar pb_ZIP;
   }
 }
 

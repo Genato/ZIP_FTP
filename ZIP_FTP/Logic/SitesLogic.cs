@@ -14,20 +14,50 @@ namespace ZIP_FTP.Logic
   {
     public static string SitesRootDirectory { get { return @"W:\Razvoj\WEM\EasyEditCms\Sites\"; } }
     public static string SitesPublishDirectory { get { return @"\Publish\"; } }
+    public static string Frontend { get { return "Frontend"; } }
 
     public static ListViewItem[] GetSites(ListView lw_Sites, string sortBy)
     {
       string[] sitesFull_Path = Directory.GetDirectories(SitesLogic.SitesRootDirectory);
       string[] sitesNames = GetLastPartFromPath(sitesFull_Path);
       string[] sitespublishDirLastModifiedPath = new string[sitesFull_Path.Length];
-      string[] sitespublishDirLastModified = new string[sitesFull_Path.Length];
+      string[] sitespublishDirLastModified = new string[sitespublishDirLastModifiedPath.Length];
 
+      //Create paths to publish directories of sites
       for (int i = 0; i < sitesFull_Path.Length; i++)
       {
-        sitespublishDirLastModifiedPath[i] = sitesFull_Path[i] + SitesPublishDirectory + sortBy;
+        sitespublishDirLastModifiedPath[i] = sitesFull_Path[i] + SitesPublishDirectory;
       }
 
-      sitespublishDirLastModified = GetSitesDirectoryLastModifiedTime(sitespublishDirLastModifiedPath);
+      //
+      for (int i = 0; i < sitespublishDirLastModifiedPath.Length; i++)
+      {
+        try
+        {
+          string[] publishDirectoryContent = Directory.GetDirectories(sitespublishDirLastModifiedPath[i]);
+
+          if (publishDirectoryContent.Length <= 0)
+          {
+            sitespublishDirLastModified[i] = "0_No publish content";
+            continue;
+          }
+
+          string[] publishDirectoryContent_LastModifiedTimes = GetDirectoryContentsLastModifiedTime(publishDirectoryContent);
+
+          sitespublishDirLastModified[i] = GetLastModifiedTimeFromDirectory(publishDirectoryContent_LastModifiedTimes);
+        }
+        catch (Exception e)
+        {
+          if (e.Message.Contains("Could not find a part of the path 'W:\\Razvoj\\WEM\\EasyEditCms\\Sites"))
+          {
+            sitespublishDirLastModified[i] = "0_No publish directory";
+            continue;
+          }
+
+          MessageBox.Show(e.Message);
+          throw new Exception(e.Message);
+        }
+      }
 
       ListViewItem[] listViewItems = new ListViewItem[sitesFull_Path.Length];
 
@@ -71,7 +101,7 @@ namespace ZIP_FTP.Logic
       }
 
       string[] publishDirectoriesNames = GetLastPartFromPath(sitePublishDirectory);
-      string[] publishDirectoriesLastWriten = GetSitesDirectoryLastModifiedTime(sitePublishDirectory);
+      string[] publishDirectoriesLastWriten = GetDirectoryContentsLastModifiedTime(sitePublishDirectory);
 
       ListViewItem[] listViewItems = new ListViewItem[publishDirectoriesNames.Length];
 
@@ -105,7 +135,7 @@ namespace ZIP_FTP.Logic
       return lastPartOfPaths;
     }
 
-    public static string[] GetSitesDirectoryLastModifiedTime(string[] directoriePaths)
+    public static string[] GetDirectoryContentsLastModifiedTime(string[] directoriePaths)
     {
       string[] directoriesLastWritenTime = new string[directoriePaths.Length];
 
@@ -115,6 +145,25 @@ namespace ZIP_FTP.Logic
       }
 
       return directoriesLastWritenTime;
+    }
+
+    public static string GetLastModifiedTimeFromDirectory(string[] directoryToSearch)
+    {
+      DateTime latestModified = Convert.ToDateTime(directoryToSearch[0]);
+
+      if (directoryToSearch.Length == 1)
+      {
+        return directoryToSearch[0];
+      }
+
+      for (int i = 0; i < directoryToSearch.Length; i++)
+      {
+        DateTime dirDateTime = Convert.ToDateTime(directoryToSearch[i]);
+
+        latestModified = latestModified >= dirDateTime ? latestModified : dirDateTime;
+      }
+
+      return latestModified.ToString();
     }
   }
 }
