@@ -4,6 +4,10 @@ using System.Linq;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
+using ZIP_FTP;
+using ZIP_FTP.Extenders;
 
 namespace Helpers
 {
@@ -257,26 +261,39 @@ namespace Helpers
     #region Simple ZIP methods
 
     //Example 1
-    public static void SimpleZip(string dirToZip, string zipName)
+    public static void SimpleZip(string dirToZip, string zipName, MainWnd mainWnd, CustomProgressBar pb_ZIP)
     {
+      CancellationTokenSource ts_ZIP = new CancellationTokenSource();
+      CancellationToken ct_ZIP = ts_ZIP.Token;
+
       try
       {
+        Task pbZip_Task = new Task(() => { pb_ZIP.SetProgressBarValueByTicks(mainWnd, 100, "Zipping...", ct_ZIP); }, ct_ZIP);
+        pbZip_Task.Start();
+
         ZipFile.CreateFromDirectory(dirToZip, zipName);
+
+        ts_ZIP.Cancel();
+        mainWnd.SetProgressBarValue(100, "Zipping finished", pb_ZIP);
       }
       catch (IOException exc)
       {
+        ts_ZIP.Cancel();
+
         MessageBox.Show(exc.Message);
 
         DialogResult dialogResult = MessageBox.Show("Do you whant to delete existing file(zip) ?", "File exists !!", MessageBoxButtons.YesNo);
 
         if (dialogResult == DialogResult.Yes)
         {
+          mainWnd.SetProgressBarValue(0, "", pb_ZIP);
           File.Delete(zipName);
-          SimpleZip(dirToZip, zipName);
+          SimpleZip(dirToZip, zipName, mainWnd, pb_ZIP);
         }
         else
         {
           MessageBox.Show("Old version of file(zip) will be uploaded !!");
+          mainWnd.SetProgressBarValue(100, "Zipping finished", pb_ZIP);
         }
       }
       catch (Exception exc)

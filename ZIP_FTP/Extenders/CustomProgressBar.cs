@@ -45,7 +45,7 @@ namespace ZIP_FTP.Extenders
       }
 
       // Set the Display text (Either a % amount or our custom text
-      string text = DisplayStyle == ProgressBarDisplayText.Percentage ? Value.ToString() + '%' : CustomText;
+      string text = DisplayStyle == ProgressBarDisplayText.CustomText ? Value.ToString() + '%' : Value.ToString() + '%' + CustomText;
 
 
       using (Font f = new Font(FontFamily.GenericSerif, 10))
@@ -61,12 +61,20 @@ namespace ZIP_FTP.Extenders
       }
     }
 
-    public void SetProgressBarValueByTicks(MainWnd mainWnd, int value)
+    public void SetProgressBarValueByTicks(MainWnd mainWnd, int value, string text, CancellationToken cancellationToken)
     {
-      for (int i = 0; i < value; i++)
+      try
       {
-        mainWnd.SetProgressBarValue(i, this);
-        Thread.Sleep(300);
+        for (int i = 0; i < value; i++)
+        {
+          mainWnd.SetProgressBarValue(i, text, this);
+          Thread.Sleep(200);
+          cancellationToken.ThrowIfCancellationRequested();
+        }
+      }
+      catch (Exception)
+      {
+
       }
     }
   }

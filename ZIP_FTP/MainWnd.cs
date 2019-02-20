@@ -159,14 +159,14 @@ namespace ZIP_FTP
 
     #region Cross threaded methods
 
-    delegate void SetProgressBarDelegate(int value, CustomProgressBar pb);
+    delegate void SetProgressBarDelegate(int value, string text, CustomProgressBar pb);
 
     /// <summary>
     /// Method for setting up ProgressBar value (for cross threaded) 
     /// </summary>
     /// <param name="value"></param>
     /// <param name="pb"></param>
-    public void SetProgressBarValue(int value, CustomProgressBar pb)
+    public void SetProgressBarValue(int value, string text, CustomProgressBar pb)
     {
       // InvokeRequired required compares the thread ID of the
       // calling thread to the thread ID of the creating thread.
@@ -174,12 +174,12 @@ namespace ZIP_FTP
       if (pb.InvokeRequired)
       {
         SetProgressBarDelegate del = new SetProgressBarDelegate(SetProgressBarValue);
-        this.Invoke(del, new object[] { value, pb });
+        this.Invoke(del, new object[] { value, text, pb });
       }
       else
       {
         pb.Value = value;
-        pb.CustomText = value.ToString() + "%";
+        pb.CustomText = value == 0 ? "" : " - " + text;
       }
 
       #endregion
