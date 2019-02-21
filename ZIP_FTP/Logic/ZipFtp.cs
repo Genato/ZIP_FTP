@@ -1,6 +1,8 @@
 ﻿using Helpers;
+using SimplePasswordManager.Crypt;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +18,8 @@ namespace ZIP_FTP.Logic
   {
     private static string FTP_URL { get { return "ftp://server.wem.hr/_upload/"; } }
     public MainWnd MainWnd { get; set; }
+    public static string UserName { get { return ConfigurationManager.AppSettings["UserName"]; } }
+    public static string Password { get { return Crypting.DecryptSecret(ConfigurationManager.AppSettings["Password"]); } }
 
     public static void ZipThenFtp(MainWnd mainWnd, TextBox tb_selectedPublishItemFullPath, CustomProgressBar pb_ZIP, CustomProgressBar pb_FTP, string SiteName)
     {
@@ -38,7 +42,7 @@ namespace ZIP_FTP.Logic
         Task pbFtp_Task = new Task(() => { pb_FTP.SetProgressBarValueByTicks(mainWnd, 100, "Uploading...", ct_FTP); }, ct_FTP);
         pbFtp_Task.Start();
 
-        client.Credentials = new NetworkCredential("renato.katalenic-ftp", "b#sd!s9K4Cs8H4q");
+        client.Credentials = new NetworkCredential(UserName, Password);
         client.UploadFile(FTP_URL + fileName, WebRequestMethods.Ftp.UploadFile, zipFileName_Path);
 
         ts_FTP.Cancel();

@@ -36,8 +36,6 @@ namespace ZIP_FTP
       this.lbl_Sites = new System.Windows.Forms.Label();
       this.lbl_SiteDirectory = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
-      this.pb_FTP = new CustomProgressBar();
-      this.pb_ZIP = new CustomProgressBar();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.rb_tester = new System.Windows.Forms.RadioButton();
       this.rb_release = new System.Windows.Forms.RadioButton();
@@ -54,6 +52,9 @@ namespace ZIP_FTP
       this.lastModified = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.lbl_SelectedPublish = new System.Windows.Forms.Label();
       this.btn_ZipFtp = new System.Windows.Forms.Button();
+      this.button1 = new System.Windows.Forms.Button();
+      this.pb_FTP = new ZIP_FTP.Extenders.CustomProgressBar();
+      this.pb_ZIP = new ZIP_FTP.Extenders.CustomProgressBar();
       this.groupBox1.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.SuspendLayout();
@@ -104,20 +105,6 @@ namespace ZIP_FTP
       this.groupBox1.Size = new System.Drawing.Size(724, 669);
       this.groupBox1.TabIndex = 5;
       this.groupBox1.TabStop = false;
-      // 
-      // pb_FTP
-      // 
-      this.pb_FTP.Location = new System.Drawing.Point(6, 527);
-      this.pb_FTP.Name = "pb_FTP";
-      this.pb_FTP.Size = new System.Drawing.Size(711, 33);
-      this.pb_FTP.TabIndex = 18;
-      // 
-      // pb_ZIP
-      // 
-      this.pb_ZIP.Location = new System.Drawing.Point(6, 465);
-      this.pb_ZIP.Name = "pb_ZIP";
-      this.pb_ZIP.Size = new System.Drawing.Size(711, 32);
-      this.pb_ZIP.TabIndex = 17;
       // 
       // groupBox2
       // 
@@ -270,11 +257,36 @@ namespace ZIP_FTP
       this.btn_ZipFtp.UseVisualStyleBackColor = true;
       this.btn_ZipFtp.Click += new System.EventHandler(this.btn_ZipFtp_Click);
       // 
+      // button1
+      // 
+      this.button1.Location = new System.Drawing.Point(0, 0);
+      this.button1.Name = "button1";
+      this.button1.Size = new System.Drawing.Size(75, 23);
+      this.button1.TabIndex = 0;
+      // 
+      // pb_FTP
+      // 
+      this.pb_FTP.CustomText = null;
+      this.pb_FTP.DisplayStyle = ZIP_FTP.Extenders.ProgressBarDisplayText.Percentage;
+      this.pb_FTP.Location = new System.Drawing.Point(6, 527);
+      this.pb_FTP.Name = "pb_FTP";
+      this.pb_FTP.Size = new System.Drawing.Size(711, 33);
+      this.pb_FTP.TabIndex = 18;
+      // 
+      // pb_ZIP
+      // 
+      this.pb_ZIP.CustomText = null;
+      this.pb_ZIP.DisplayStyle = ZIP_FTP.Extenders.ProgressBarDisplayText.Percentage;
+      this.pb_ZIP.Location = new System.Drawing.Point(6, 465);
+      this.pb_ZIP.Name = "pb_ZIP";
+      this.pb_ZIP.Size = new System.Drawing.Size(711, 32);
+      this.pb_ZIP.TabIndex = 17;
+      // 
       // MainWnd
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(748, 693);
+      this.ClientSize = new System.Drawing.Size(1589, 695);
       this.Controls.Add(this.groupBox1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "MainWnd";
@@ -311,6 +323,7 @@ namespace ZIP_FTP
     private System.Windows.Forms.GroupBox groupBox2;
     private CustomProgressBar pb_FTP;
     private CustomProgressBar pb_ZIP;
+    private System.Windows.Forms.Button button1;
   }
 }
 

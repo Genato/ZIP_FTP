@@ -13,6 +13,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using ZIP_FTP.Logic;
 using System.Net;
 using ZIP_FTP.Extenders;
+using System.Configuration;
 
 namespace ZIP_FTP
 {
@@ -20,6 +21,15 @@ namespace ZIP_FTP
   {
     public MainWnd()
     {
+      string userName = ConfigurationManager.AppSettings["UserName"];
+      string password = ConfigurationManager.AppSettings["Password"];
+
+      if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
+      {
+        UserCredentials credentials = new UserCredentials();
+        credentials.ShowDialog();
+      }
+
       InitializeComponent();
 
       SetDefaultRadioChecked(rb_release);
@@ -61,7 +71,7 @@ namespace ZIP_FTP
       lw_SitePublishDir.Items.Clear();
       CustomizeListView(lw_SitePublishDir);
 
-      lbl_SiteDirectory.Text += (string)lw_Sites.SelectedItems[0].Text;
+      lbl_SiteDirectory.Text = (string)lw_Sites.SelectedItems[0].Text;
       SiteName = (string)lw_Sites.SelectedItems[0].Text;
 
       try
@@ -184,5 +194,6 @@ namespace ZIP_FTP
 
       #endregion
     }
+
   }
 }
